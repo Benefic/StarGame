@@ -4,23 +4,29 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class BaseScreen implements Screen, InputProcessor {
 
     protected SpriteBatch batch;
+    private Texture background;
 
     @Override
     public void show() {
         System.out.println("show");
         Gdx.input.setInputProcessor(this);
         batch = new SpriteBatch();
+        background = new Texture("background.jpg");
     }
 
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.BROWN);
+        batch.begin();
+        batch.draw(background, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        batch.end();
     }
 
     @Override
@@ -48,6 +54,7 @@ public class BaseScreen implements Screen, InputProcessor {
     public void dispose() {
         System.out.println("dispose");
         batch.dispose();
+        background.dispose();
     }
 
     @Override
