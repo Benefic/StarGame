@@ -10,9 +10,9 @@ import ru.abenefic.game.star.sprite.Sprite;
 public class Logo extends Sprite {
 
     private final float V_LEN = 0.01f;
+    private final Vector2 destination = new Vector2();
 
     private Vector2 velocity;
-    private final Vector2 destination = new Vector2();
 
     public Logo(Texture texture) {
         super(new TextureRegion(texture));
