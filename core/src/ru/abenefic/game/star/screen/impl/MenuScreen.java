@@ -10,13 +10,8 @@ import ru.abenefic.game.star.sprite.impl.Logo;
 
 public class MenuScreen extends BaseScreen {
 
-    private final float V_LEN = 0.01f;
-
     private Texture img;
     private Texture bg;
-    private Vector2 pos;
-
-    private Vector2 velocity;
 
     private Background background;
     private Logo logo;
@@ -26,10 +21,8 @@ public class MenuScreen extends BaseScreen {
         super.show();
         img = new Texture("badlogic.jpg");
         bg = new Texture("textures/background.jpg");
-        pos = new Vector2();
         background = new Background(bg);
         logo = new Logo(img);
-        velocity = new Vector2();
     }
 
     @Override
@@ -44,15 +37,9 @@ public class MenuScreen extends BaseScreen {
         super.render(delta);
         batch.begin();
         background.draw(batch);
-        logo.pos.set(pos);
         logo.draw(batch);
         batch.end();
-        Vector2 touch = getTouch();
-        if (pos.dst(touch) <= V_LEN) {
-            pos.set(touch);
-        } else {
-            pos.add(velocity);
-        }
+        logo.move();
     }
 
     @Override
@@ -64,7 +51,7 @@ public class MenuScreen extends BaseScreen {
 
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
-        velocity.set(touch.cpy().sub(pos)).setLength(V_LEN);
+        logo.setPosition(touch);
         return super.touchDown(touch, pointer, button);
     }
 }

@@ -75,11 +75,6 @@ public class Rect {
         pos.x = right - halfWidth;
     }
 
-    public void setPos(Vector2 from) {
-        pos.x = from.x + halfWidth;
-        pos.y = from.y + halfHeight;
-    }
-
     public void setBottom(float bottom) {
         pos.y = bottom + halfHeight;
     }
