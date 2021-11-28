@@ -1,18 +1,17 @@
-package ru.abenefic.game.star.screen;
+package ru.gb.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 
-import ru.abenefic.game.star.math.MatrixUtils;
-import ru.abenefic.game.star.math.Rect;
+import ru.gb.math.MatrixUtils;
+import ru.gb.math.Rect;
 
 public class BaseScreen implements Screen, InputProcessor {
 
@@ -42,21 +41,19 @@ public class BaseScreen implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(Color.VIOLET);
+        ScreenUtils.clear(Color.BROWN);
     }
 
     @Override
     public void resize(int width, int height) {
         System.out.println("resize width = " + width + " height = " + height);
-
         screenBounds.setSize(width, height);
         screenBounds.setLeft(0);
         screenBounds.setBottom(0);
 
         float aspect = width / (float) height;
         worldBounds.setHeight(1f);
-        worldBounds.setWidth(aspect);
-
+        worldBounds.setWidth(1f * aspect);
         MatrixUtils.calcTransitionMatrix(worldToGl, worldBounds, glBounds);
         batch.setProjectionMatrix(worldToGl);
         resize(worldBounds);
@@ -111,7 +108,8 @@ public class BaseScreen implements Screen, InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         System.out.println("touchDown screenX = " + screenX + " screenY = " + screenY);
         touch.set(screenX, screenBounds.getHeight() - screenY).mul(screenToWorld);
-        return touchDown(touch, pointer, button);
+        touchDown(touch, pointer, button);
+        return false;
     }
 
     public boolean touchDown(Vector2 touch, int pointer, int button) {
@@ -123,7 +121,8 @@ public class BaseScreen implements Screen, InputProcessor {
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         System.out.println("touchUp screenX = " + screenX + " screenY = " + screenY);
         touch.set(screenX, screenBounds.getHeight() - screenY).mul(screenToWorld);
-        return touchUp(touch, pointer, button);
+        touchUp(touch, pointer, button);
+        return false;
     }
 
     public boolean touchUp(Vector2 touch, int pointer, int button) {
@@ -135,7 +134,8 @@ public class BaseScreen implements Screen, InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         System.out.println("touchDragged screenX = " + screenX + " screenY = " + screenY);
         touch.set(screenX, screenBounds.getHeight() - screenY).mul(screenToWorld);
-        return touchDragged(touch, pointer);
+        touchDragged(touch, pointer);
+        return false;
     }
 
     public boolean touchDragged(Vector2 touch, int pointer) {

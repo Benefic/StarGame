@@ -1,10 +1,10 @@
-package ru.abenefic.game.star.sprite;
+package ru.gb.sprite;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
-import ru.abenefic.game.star.math.Rect;
+import ru.gb.math.Rect;
 
 public class Sprite extends Rect {
 

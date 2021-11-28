@@ -1,11 +1,10 @@
-package ru.abenefic.game.star.sprite.impl;
+package ru.gb.sprite.impl;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import ru.abenefic.game.star.math.Rect;
-import ru.abenefic.game.star.sprite.Sprite;
-
+import ru.gb.math.Rect;
+import ru.gb.sprite.Sprite;
 
 public class Background extends Sprite {
 

@@ -1,4 +1,4 @@
-package ru.abenefic.game.star.math;
+package ru.gb.math;
 
 import com.badlogic.gdx.math.Vector2;
 
