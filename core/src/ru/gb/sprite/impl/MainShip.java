@@ -14,6 +14,7 @@ public class MainShip extends Sprite {
     private static final float HEIGHT = 0.15f;
     private static final float BOTTOM_MARGIN = 0.05f;
     private static final int INVALID_POINTER = -1;
+    private static final float AUTOSHOT_INTERVAL = 0.1f;
 
     private final Vector2 v;
     private final Vector2 v0;
@@ -23,6 +24,8 @@ public class MainShip extends Sprite {
     private final Vector2 bulletV;
     private final float bulletHeight;
     private final int damage;
+
+    private float autoshootTimer;
 
     private Rect worldBounds;
 
@@ -60,6 +63,11 @@ public class MainShip extends Sprite {
         if (getLeft() < worldBounds.getLeft()) {
             setLeft(worldBounds.getLeft());
             stop();
+        }
+        autoshootTimer += delta;
+        if (autoshootTimer > AUTOSHOT_INTERVAL) {
+            autoshootTimer = 0f;
+            shoot();
         }
     }
 
@@ -112,9 +120,6 @@ public class MainShip extends Sprite {
             case Input.Keys.RIGHT:
                 pressedRight = true;
                 moveRight();
-                break;
-            case Input.Keys.UP:
-                shoot();
                 break;
         }
         return false;
