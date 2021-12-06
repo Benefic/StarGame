@@ -10,17 +10,23 @@ import ru.gb.sprite.Ship;
 
 public class EnemyShip extends Ship {
 
+    private final static float START_SPEED = -0.5f;
+
     public EnemyShip(BulletPool bulletPool, Sound bulletSound, Rect worldBounds) {
         this.bulletPool = bulletPool;
         this.bulletSound = bulletSound;
         this.worldBounds = worldBounds;
         this.v = new Vector2();
-        this.v0 = new Vector2();
+        this.v0 = new Vector2(0, START_SPEED);
     }
 
     @Override
     public void update(float delta) {
-        super.update(delta);
+        if (getTop() <= worldBounds.getTop()) {
+            super.update(delta);
+        } else {
+            pos.mulAdd(v0, delta);
+        }
         if (getBottom() < worldBounds.getBottom()) {
             destroy();
         }
