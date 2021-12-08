@@ -6,26 +6,28 @@ import com.badlogic.gdx.math.Vector2;
 
 import ru.gb.math.Rect;
 import ru.gb.pool.impl.BulletPool;
+import ru.gb.pool.impl.ExplosionPool;
 import ru.gb.sprite.Ship;
 
 public class EnemyShip extends Ship {
 
-    private final static float START_SPEED = -0.5f;
-
-    public EnemyShip(BulletPool bulletPool, Sound bulletSound, Rect worldBounds) {
+    public EnemyShip(ExplosionPool explosionPool, BulletPool bulletPool, Sound bulletSound, Rect worldBounds) {
+        this.explosionPool = explosionPool;
         this.bulletPool = bulletPool;
         this.bulletSound = bulletSound;
         this.worldBounds = worldBounds;
         this.v = new Vector2();
-        this.v0 = new Vector2(0, START_SPEED);
+        this.v0 = new Vector2();
     }
 
     @Override
     public void update(float delta) {
-        if (getTop() <= worldBounds.getTop()) {
-            super.update(delta);
+        super.update(delta);
+        if (getTop() > worldBounds.getTop()) {
+            v.set(0, -0.3f);
+            reloadTimer = reloadInterval * 0.8f;
         } else {
-            pos.mulAdd(v0, delta);
+            v.set(v0);
         }
         if (getBottom() < worldBounds.getBottom()) {
             destroy();
@@ -44,7 +46,7 @@ public class EnemyShip extends Ship {
             int hp
     ) {
         this.regions = regions;
-        this.v.set(v);
+        this.v0.set(v);
         this.bulletRegion = bulletRegion;
         this.bulletHeight = bulletHeight;
         this.bulletV = bulletV;
@@ -52,5 +54,13 @@ public class EnemyShip extends Ship {
         this.reloadInterval = reloadInterval;
         setHeightProportion(height);
         this.hp = hp;
+    }
+
+    public boolean isBulletCollision(Bullet bullet) {
+        return !(bullet.getRight() < getLeft()
+                || bullet.getLeft() > getRight()
+                || bullet.getBottom() > getTop()
+                || bullet.getTop() < pos.y
+        );
     }
 }
