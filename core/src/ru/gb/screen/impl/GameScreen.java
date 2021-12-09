@@ -14,8 +14,10 @@ import ru.gb.pool.impl.BulletPool;
 import ru.gb.pool.impl.EnemyPool;
 import ru.gb.pool.impl.ExplosionPool;
 import ru.gb.screen.BaseScreen;
+import ru.gb.sprite.ClickListener;
 import ru.gb.sprite.impl.Background;
 import ru.gb.sprite.impl.Bullet;
+import ru.gb.sprite.impl.ButtonNewGame;
 import ru.gb.sprite.impl.EnemyShip;
 import ru.gb.sprite.impl.GameOver;
 import ru.gb.sprite.impl.MainShip;
@@ -45,6 +47,8 @@ public class GameScreen extends BaseScreen {
 
     private EnemyEmitter enemyEmitter;
 
+    private ButtonNewGame buttonNewGame;
+
     @Override
     public void show() {
         super.show();
@@ -72,6 +76,14 @@ public class GameScreen extends BaseScreen {
         music = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
         music.setLooping(true);
         music.play();
+
+        buttonNewGame = new ButtonNewGame(atlas, new ClickListener() {
+            @Override
+            public void onClick() {
+                startNewGame();
+            }
+        });
+
     }
 
     @Override
@@ -92,6 +104,7 @@ public class GameScreen extends BaseScreen {
         }
         mainShip.resize(worldBounds);
         gameOver.resize(worldBounds);
+        buttonNewGame.resize(worldBounds);
     }
 
     @Override
@@ -111,12 +124,14 @@ public class GameScreen extends BaseScreen {
     @Override
     public boolean touchDown(Vector2 touch, int pointer, int button) {
         mainShip.touchDown(touch, pointer, button);
+        buttonNewGame.touchDown(touch, pointer, button);
         return false;
     }
 
     @Override
     public boolean touchUp(Vector2 touch, int pointer, int button) {
         mainShip.touchUp(touch, pointer, button);
+        buttonNewGame.touchUp(touch, pointer, button);
         return false;
     }
 
@@ -202,8 +217,17 @@ public class GameScreen extends BaseScreen {
             enemyPool.drawActiveSprites(batch);
         } else {
             gameOver.draw(batch);
+            buttonNewGame.draw(batch);
+            bulletPool.freeAllActive();
+            enemyPool.freeAllActive();
         }
         explosionPool.drawActiveSprites(batch);
         batch.end();
+    }
+
+    private void startNewGame() {
+        mainShip.flushDestroy();
+        explosionPool.freeAllActive();
+        mainShip.pos.set(0f, mainShip.pos.y);
     }
 }

@@ -16,6 +16,7 @@ public class MainShip extends Ship {
     private static final float BOTTOM_MARGIN = 0.05f;
     private static final int INVALID_POINTER = -1;
     private static final float RELOAD_INTERVAL = 0.2f;
+    private static final int FULL_HP = 100;
 
     private boolean pressedLeft;
     private boolean pressedRight;
@@ -36,7 +37,7 @@ public class MainShip extends Ship {
         this.damage = 1;
         this.reloadInterval = RELOAD_INTERVAL;
         this.reloadTimer = 0;
-        this.hp = 100;
+        this.hp = FULL_HP;
     }
 
     @Override
@@ -65,6 +66,12 @@ public class MainShip extends Ship {
                 || bullet.getBottom() > pos.y
                 || bullet.getTop() < getBottom()
         );
+    }
+
+    @Override
+    public void flushDestroy() {
+        super.flushDestroy();
+        this.hp = FULL_HP;
     }
 
     @Override
